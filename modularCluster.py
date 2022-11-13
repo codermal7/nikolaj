@@ -100,7 +100,7 @@ def analyze(nCluster: int, start: str, end: str):
             continue
         Hcenters.append(centers)
         Pedges.append(edges)
-    return (hm, Hcenters, Pedges)
+    return [hm, Hcenters, Pedges]
 
 if __name__ == '__main__':
     hm, centers, edges = analyze(85, '08:45:00', '17:35:00')
