@@ -3,11 +3,13 @@ import numpy as np
 import pandas as pd
 from sklearn.cluster import *
 import datetime as dt
-import matplotlib.pyplot as plt
 from sklearn import preprocessing as pp
 import plotly.express as px
 from scipy.spatial import Delaunay
+import warnings
 
+
+warnings.filterwarnings("ignore")
 df = pd.read_csv('datasets/crimedata2016.csv')
 timelist = []
 for i in range(len(df)):
@@ -61,8 +63,8 @@ def alpha_shape(points, alpha, only_outer=True):
             add_edge(edges, ic, ia)
     return edges
 
-def genHeatMap():
-    fig = px.density_mapbox(cleandf, lat='Latitude', lon='Longitude', z='type',
+def genHeatMap(df):
+    fig = px.density_mapbox(df, lat='Latitude', lon='Longitude', z='type',
                         mapbox_style="stamen-terrain", radius=1, width=650, height=650)
     return fig
 
@@ -77,13 +79,30 @@ def timeFilter(start: str, end: str) -> pd.DataFrame:
 def cluster(nCluster: int, df: pd.DataFrame):
     nCluster = nCluster
     model = KMeans(n_clusters=nCluster)
-    results = model.fit_predict(cleandf.loc(axis=1)['Latitude':'Longitude'])
+    results = model.fit_predict(df.loc(axis=1)['Latitude':'Longitude'])
     return results
 
 def analyze(nCluster: int, start: str, end: str):
     tdf = timeFilter(start, end)
     results = cluster(nCluster, tdf)
     tdf['cluster'] = results
-    
-    hm = genHeatMap()
-    return hm, plt
+    Hcenters = []
+    Pedges = []
+    hm = genHeatMap(tdf)
+    for i in range(len(set(results))):
+        fildf = tdf[tdf['cluster'] == i]
+        nmod = KMeans(int(np.power(len(fildf), 0.25)))
+        nmod.fit([[i, j] for i, j in zip(fildf['Longitude'], fildf['Latitude'])])
+        centers = nmod.cluster_centers_
+        try:
+            edges = alpha_shape(centers, alpha=1, only_outer=True)
+        except:
+            continue
+        Hcenters.append(centers)
+        Pedges.append(edges)
+    return [hm, Hcenters, Pedges]
+
+if __name__ == '__main__':
+    hm, centers, edges = analyze(85, '08:45:00', '17:35:00')
+    print(len(centers))
+    print(edges)
