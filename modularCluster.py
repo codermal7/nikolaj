@@ -6,6 +6,7 @@ import datetime as dt
 import matplotlib.pyplot as plt
 from sklearn import preprocessing as pp
 import plotly.express as px
+from scipy.spatial import Delaunay
 
 df = pd.read_csv('datasets/crimedata2016.csv')
 timelist = []
@@ -33,6 +34,33 @@ cleandf['desc'] = lp.fit_transform(cleandf['Description'])
 cleandf['locdesc'] = lp.fit_transform(cleandf['Location Description'])
 cleandf['type'] = encodePrim
 
+def alpha_shape(points, alpha, only_outer=True):
+    assert points.shape[0] > 3, "Need at least four points"
+    def add_edge(edges, i, j):
+        if (i, j) in edges or (j, i) in edges:
+            assert (j, i) in edges, "Can't go twice over same directed edge right?"
+            if only_outer:
+                edges.remove((j, i))
+            return
+        edges.add((i, j))
+    tri = Delaunay(points)
+    edges = set()
+    for ia, ib, ic in tri.vertices:
+        pa = points[ia]
+        pb = points[ib]
+        pc = points[ic]
+        a = np.sqrt((pa[0] - pb[0]) ** 2 + (pa[1] - pb[1]) ** 2)
+        b = np.sqrt((pb[0] - pc[0]) ** 2 + (pb[1] - pc[1]) ** 2)
+        c = np.sqrt((pc[0] - pa[0]) ** 2 + (pc[1] - pa[1]) ** 2)
+        s = (a + b + c) / 2.0
+        area = np.sqrt(s * (s - a) * (s - b) * (s - c))
+        circum_r = a * b * c / (4.0 * area)
+        if circum_r < alpha:
+            add_edge(edges, ia, ib)
+            add_edge(edges, ib, ic)
+            add_edge(edges, ic, ia)
+    return edges
+
 def genHeatMap():
     fig = px.density_mapbox(cleandf, lat='Latitude', lon='Longitude', z='type',
                         mapbox_style="stamen-terrain", radius=1, width=650, height=650)
@@ -46,8 +74,16 @@ def timeFilter(start: str, end: str) -> pd.DataFrame:
     else:
         return cleandf.loc[(df['Time'] >= start) | (df['Time'] < end)]
 
-def cluster(nCluster: int):
+def cluster(nCluster: int, df: pd.DataFrame):
     nCluster = nCluster
     model = KMeans(n_clusters=nCluster)
     results = model.fit_predict(cleandf.loc(axis=1)['Latitude':'Longitude'])
     return results
+
+def analyze(nCluster: int, start: str, end: str):
+    tdf = timeFilter(start, end)
+    results = cluster(nCluster, tdf)
+    tdf['cluster'] = results
+    
+    hm = genHeatMap()
+    return hm, plt
