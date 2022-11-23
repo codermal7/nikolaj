@@ -7,34 +7,30 @@ from sklearn import preprocessing as pp
 import plotly.express as px
 from scipy.spatial import Delaunay
 import warnings
-
-
 warnings.filterwarnings("ignore")
-df = pd.read_csv('datasets/crimedata2016.csv')
-timelist = []
-for i in range(len(df)):
-    datetime_object = dt.datetime.strptime(df['Date'][i][-11:], '%I:%M:%S %p')
-    timelist.append(datetime_object)
-df['Time'] = timelist
 
-lp = pp.LabelEncoder()
-op = pp.OrdinalEncoder()
-# creating a manual encoder for descriptions
-cleandf = df.drop(['Date', 'X Coordinate', 'Y Coordinate', 'Beat', 'Year', 'FBI Code'], axis=1)
-basicCrime = list(set(cleandf['Primary Type']))
-basicCrime
-primList = {'NON - CRIMINAL': 0, 'NON-CRIMINAL (SUBJECT SPECIFIED)': 0, 'NON-CRIMINAL': 0,
-            'INTIMIDATION': 1, 'OBSCENITY': 1, 'OTHER OFFENSE': 1, 'PUBLIC INDECENCY': 1,
-            'LIQUOR LAW VIOLATION': 2, 'PUBLIC PEACE VIOLATION': 2, 'CONCEALED CARRY LICENSE VIOLATION': 2,
-            'PROSTITUTION': 3, 'GAMBLING': 3, 'INTERFERENCE WITH PUBLIC OFFICER': 3, 'STALKING': 3,
-            'ARSON': 6, 'BURGLARY': 5, 'BATTERY': 2, 'ROBBERY': 5, 'SEX OFFENSE': 5, 'ASSAULT': 3,
-            'THEFT': 4, 'DECEPTIVE PRACTICE': 5, 'CRIMINAL TRESPASS': 4, 'CRIMINAL DAMAGE': 4, 'WEAPONS VIOLATION' : 5,
-            'MOTOR VEHICLE THEFT': 5, 'OFFENSE INVOLVING CHILDREN': 5, 'KIDNAPPING': 5, 'NARCOTICS': 5,
-            'OTHER NARCOTIC VIOLATION' : 4,'HUMAN TRAFFICKING' : 6,'CRIM SEXUAL ASSAULT' : 6, 'HOMICIDE' : 6}
-encodePrim = [primList[i] for i in cleandf['Primary Type']]
-cleandf['desc'] = lp.fit_transform(cleandf['Description'])
-cleandf['locdesc'] = lp.fit_transform(cleandf['Location Description'])
-cleandf['type'] = encodePrim
+def allocate(city: str, nCluster: int, start: str, end: str):
+    global df 
+    df = pd.read_csv('datasets/' + city + 'Set.csv')
+    timelist = []
+    for i in range(len(df)):
+        datetime_object = dt.datetime.strptime(df['Time'][i][-8:], '%H:%M:%S')
+        timelist.append(datetime_object)
+    df['Time'] = timelist
+
+    # for reference, the severity scale i used. based on some basic law articles i could find.
+    # THIS FILE NEEDS TO BE EDITED IN ORDER TO WORK WITH ALL DATASETS
+    primList = {'NON - CRIMINAL': 0, 'NON-CRIMINAL (SUBJECT SPECIFIED)': 0, 'NON-CRIMINAL': 0,
+                'INTIMIDATION': 1, 'OBSCENITY': 1, 'OTHER OFFENSE': 1, 'PUBLIC INDECENCY': 1,
+                'LIQUOR LAW VIOLATION': 2, 'PUBLIC PEACE VIOLATION': 2, 'CONCEALED CARRY LICENSE VIOLATION': 2,
+                'PROSTITUTION': 3, 'GAMBLING': 3, 'INTERFERENCE WITH PUBLIC OFFICER': 3, 'STALKING': 3,
+                'ARSON': 6, 'BURGLARY': 5, 'BATTERY': 2, 'ROBBERY': 5, 'SEX OFFENSE': 5, 'ASSAULT': 3,
+                'THEFT': 4, 'DECEPTIVE PRACTICE': 5, 'CRIMINAL TRESPASS': 4, 'CRIMINAL DAMAGE': 4, 'WEAPONS VIOLATION' : 5,
+                'MOTOR VEHICLE THEFT': 5, 'OFFENSE INVOLVING CHILDREN': 5, 'KIDNAPPING': 5, 'NARCOTICS': 5,
+                'OTHER NARCOTIC VIOLATION' : 4,'HUMAN TRAFFICKING' : 6,'CRIM SEXUAL ASSAULT' : 6, 'HOMICIDE' : 6}
+    # some code here idk lmao
+
+    return analyze(nCluster, start, end)
 
 def alpha_shape(points, alpha, only_outer=True):
     assert points.shape[0] > 3, "Need at least four points"
@@ -72,9 +68,9 @@ def timeFilter(start: str, end: str) -> pd.DataFrame:
     start = dt.datetime.strptime(start, '%H:%M:%S')
     end = dt.datetime.strptime(end, '%H:%M:%S')
     if (start < end):
-        return cleandf.loc[(df['Time'] >= start) & (df['Time'] < end)]
+        return df.loc[(df['Time'] >= start) & (df['Time'] < end)]
     else:
-        return cleandf.loc[(df['Time'] >= start) | (df['Time'] < end)]
+        return df.loc[(df['Time'] >= start) | (df['Time'] < end)]
 
 def cluster(nCluster: int, df: pd.DataFrame):
     nCluster = nCluster
@@ -102,7 +98,8 @@ def analyze(nCluster: int, start: str, end: str):
         Pedges.append(edges)
     return [hm, Hcenters, Pedges]
 
+# test case for debug, runtime is still high.
 if __name__ == '__main__':
-    hm, centers, edges = analyze(85, '08:45:00', '17:35:00')
+    hm, centers, edges = allocate('Chicago', 85, '08:45:00', '17:35:00')
     print(len(centers))
     print(edges)
