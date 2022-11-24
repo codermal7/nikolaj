@@ -99,6 +99,6 @@ def analyze(nCluster: int, start: str, end: str):
 
 # test case for debug, runtime is still high.
 if __name__ == '__main__':
-    hm, centers, edges = allocate('New York City', 85, '08:45:00', '17:35:00')
+    hm, centers, edges = allocate('San Francisco', 85, '08:45:00', '17:35:00')
     print(len(centers))
     print(edges)
