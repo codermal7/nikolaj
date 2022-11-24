@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from sklearn.cluster import *
 import datetime as dt
-from sklearn import preprocessing as pp
 import plotly.express as px
 from scipy.spatial import Delaunay
 import warnings
