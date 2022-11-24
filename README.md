@@ -16,5 +16,7 @@ As user input, our program requires the following:
 Most of this is handled with a friendly user interface. The main hurdle to cross now is the fact that the program is quite slow. Which, could be expected considering the amount of data that needs to be processed every time a new request is received, still needs optimization wherever possible nonetheless. And the fact that we need to find a proof of concept to actually chart the routes themselves that can be implemented. Some example screenshots are attached.
 
 ![The basic heatmap (over chicago, with a basic timeframe), plotted using plotly.](assets/heatmap.png)
+The basic heatmap (over chicago, with a basic timeframe), plotted using plotly.
 
 ![A prototype plot of the precinct zones.](assets/prototypeplot.jpg)
+A prototype plot of the precinct zones.
