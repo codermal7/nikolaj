@@ -1,6 +1,5 @@
-import numpy as np
-import pandas as pd
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from modularCluster import *
 
 app = FastAPI(debug=True)
@@ -14,8 +13,10 @@ def generate_figure(type_gen: str, city_name:str, n: int, start: str, end: str):
     df = assign(city_name)
     timedf = timeFilter(df, start, end)
     if type_gen == "Heatmap":
-        hm = genHeatMap(timedf)
-        return {"Figure" : hm}
+        lon = timedf['Longitude'].to_list()
+        lat = timedf['Latitude'].to_list()
+        z = timedf['type'].to_list()
+        return {"type" : "densitymapbox", "lon" : lon, "lat" : lat, "z" : z}
     elif type_gen == "Routes":
         longs = []
         lats = []

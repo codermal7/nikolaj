@@ -4,6 +4,8 @@ let map = L.map("map", {
   zoom: 12,
 });
 
+// need to make another heatmap figure
+
 function runDirection(start, end) {
   // recreating new map layer after removal
   map = L.map("map", {

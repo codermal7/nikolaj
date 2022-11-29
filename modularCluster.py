@@ -59,6 +59,7 @@ def alpha_shape(points, alpha, only_outer=True):
             add_edge(edges, ic, ia)
     return edges
 
+# Generates a figure heatmap, which is in javascript. We won't be using this in our backend.
 def genHeatMap(df):
     fig = px.density_mapbox(df, lat='Latitude', lon='Longitude', z='type',
                         mapbox_style="stamen-terrain", radius=1, width=650, height=650)
@@ -118,3 +119,4 @@ if __name__ == '__main__':
             lats.append(y1) 
             lats.append(y2)
     print(lats, longs)
+    print(hm)
