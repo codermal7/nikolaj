@@ -19,9 +19,16 @@ def generate_figure(type_gen: str, city_name:str, n: int, start: str, end: str):
     elif type_gen == "Routes":
         longs = []
         lats = []
-        centers, edges = analyze(n, start, end)
+        centers, edges = analyze(timedf, n)
         for i in range(len(centers)):
             for j, k in edges[i]:
-                longs.append(centers[i][j])
-                lats.append(centers[i][k])
-        return {"longitudes" : longs, "latitudes" : lats}
+                x1 = float(centers[i][j][0])
+                y1 = float(centers[i][j][1])
+                x2 = float(centers[i][k][0])
+                y2 = float(centers[i][k][1])
+                longs.append(x1)
+                longs.append(x2)
+                lats.append(y1) 
+                lats.append(y2)
+        return {"longitudes" : list(longs), "latitudes" : list(lats)}
+

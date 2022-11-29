@@ -78,8 +78,7 @@ def cluster(nCluster: int, df: pd.DataFrame):
     results = model.fit_predict(df.loc(axis=1)['Latitude':'Longitude'])
     return results
 
-def analyze(nCluster: int, start: str, end: str):
-    tdf = timeFilter(start, end)
+def analyze(tdf: pd.DataFrame, nCluster: int):
     results = cluster(nCluster, tdf)
     tdf['cluster'] = results
     Hcenters = []
@@ -103,8 +102,19 @@ if __name__ == '__main__':
     start = '08:45:00'
     end = '17:35:00'
     n = 85
-    assign(city)
-    hm = genHeatMap(timeFilter(start, end))
-    centers, edges = analyze(n, start, end)
-    print(hm)
-    print(edges)
+    df = assign(city)
+    hm = genHeatMap(timeFilter(df, start, end))
+    centers, edges = analyze(timeFilter(df, start, end), n)
+    longs = []
+    lats = []
+    for i in range(len(centers)):
+        for j, k in edges[i]:
+            x1 = float(centers[i][j][0])
+            y1 = float(centers[i][j][1])
+            x2 = float(centers[i][k][0])
+            y2 = float(centers[i][k][1])
+            longs.append(x1)
+            longs.append(x2)
+            lats.append(y1) 
+            lats.append(y2)
+    print(lats, longs)
