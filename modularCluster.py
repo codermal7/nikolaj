@@ -4,7 +4,6 @@ import pandas as pd
 from sklearn.cluster import *
 import datetime as dt
 import plotly.express as px
-from alphashape import alphashape, optimizealpha
 from scipy.spatial import Delaunay
 import warnings
 warnings.filterwarnings("ignore")
@@ -63,7 +62,8 @@ def alpha_shape(points, alpha, only_outer=True):
 # Generates a figure heatmap, which is in javascript. We won't be using this in our backend.
 def genHeatMap(df):
     fig = px.density_mapbox(df, lat='Latitude', lon='Longitude', z='type',
-                        mapbox_style="stamen-terrain", radius=1, width=650, height=650)
+                        mapbox_style="stamen-terrain", radius=5)
+    fig.update_layout(margin ={'l':15,'t':5,'b':5,'r':15})
     return fig
 
 def timeFilter(df: pd.DataFrame, start: str, end: str) -> pd.DataFrame:
@@ -91,13 +91,22 @@ def analyze(tdf: pd.DataFrame, nCluster: int):
         nmod.fit([[i, j] for i, j in zip(fildf['Longitude'], fildf['Latitude'])])
         centers = nmod.cluster_centers_
         try:
-            alpha = 0.95 * optimizealpha(centers)
-            edges = alphashape(centers, alpha)
+            edges = alpha_shape(centers, 1)
             Hcenters.append(centers)
             Pedges.append(edges)
         except:
             continue
-    return [Hcenters, Pedges]
+    
+    longs = []
+    lats = []
+    for i in range(len(Hcenters)):
+        tempcen = Hcenters[i]
+        for j, k in Pedges[i]:
+            x = tempcen[[j, k], 0]
+            y = tempcen[[j, k], 1]
+            longs.append(x.tolist())
+            lats.append(y.tolist())
+    return longs, lats
 
 # test case for debug, runtime is still high.
 if __name__ == '__main__':
@@ -107,18 +116,4 @@ if __name__ == '__main__':
     n = 85
     df = assign(city)
     hm = genHeatMap(timeFilter(df, start, end))
-    centers, edges = analyze(timeFilter(df, start, end), n)
-    longs = []
-    lats = []
-    for i in range(len(centers)):
-        for j, k in edges[i]:
-            x1 = float(centers[i][j][0])
-            y1 = float(centers[i][j][1])
-            x2 = float(centers[i][k][0])
-            y2 = float(centers[i][k][1])
-            longs.append(x1)
-            longs.append(x2)
-            lats.append(y1) 
-            lats.append(y2)
-    print(lats, longs)
     print(hm)
