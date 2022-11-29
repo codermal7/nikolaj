@@ -62,7 +62,7 @@ def alpha_shape(points, alpha, only_outer=True):
 # Generates a figure heatmap, which is in javascript. We won't be using this in our backend.
 def genHeatMap(df):
     fig = px.density_mapbox(df, lat='Latitude', lon='Longitude', z='type',
-                        mapbox_style="stamen-terrain", radius=5)
+                        mapbox_style="stamen-terrain", radius=3)
     fig.update_layout(margin ={'l':15,'t':5,'b':5,'r':15})
     return fig
 
