@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from modularCluster import *
+import websocket
 
 app = FastAPI(debug=True)
 
@@ -18,18 +19,17 @@ def generate_figure(type_gen: str, city_name:str, n: int, start: str, end: str):
         z = timedf['type'].to_list()
         return {"type" : "densitymapbox", "lon" : lon, "lat" : lat, "z" : z}
     elif type_gen == "Routes":
+        centers, edges = analyze(timedf, n)
         longs = []
         lats = []
-        centers, edges = analyze(timedf, n)
         for i in range(len(centers)):
+            tempcen = centers[i]
             for j, k in edges[i]:
-                x1 = float(centers[i][j][0])
-                y1 = float(centers[i][j][1])
-                x2 = float(centers[i][k][0])
-                y2 = float(centers[i][k][1])
-                longs.append(x1)
-                longs.append(x2)
-                lats.append(y1) 
-                lats.append(y2)
-        return {"longitudes" : list(longs), "latitudes" : list(lats)}
+                x = tempcen[[j, k], 0]
+                y = tempcen[[j, k], 1]
+                longs.append(x.tolist())
+                lats.append(y.tolist())
+        return {"lats" : lats, "lons" : longs}
 
+
+# @app.websocket('/')

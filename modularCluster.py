@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.cluster import *
 import datetime as dt
 import plotly.express as px
+from alphashape import alphashape, optimizealpha
 from scipy.spatial import Delaunay
 import warnings
 warnings.filterwarnings("ignore")
@@ -90,11 +91,12 @@ def analyze(tdf: pd.DataFrame, nCluster: int):
         nmod.fit([[i, j] for i, j in zip(fildf['Longitude'], fildf['Latitude'])])
         centers = nmod.cluster_centers_
         try:
-            edges = alpha_shape(centers, alpha=1, only_outer=True)
+            alpha = 0.95 * optimizealpha(centers)
+            edges = alphashape(centers, alpha)
+            Hcenters.append(centers)
+            Pedges.append(edges)
         except:
             continue
-        Hcenters.append(centers)
-        Pedges.append(edges)
     return [Hcenters, Pedges]
 
 # test case for debug, runtime is still high.
