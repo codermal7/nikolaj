@@ -8,7 +8,7 @@ from scipy.spatial import Delaunay
 import warnings
 warnings.filterwarnings("ignore")
 
-def allocate(city: str, nCluster: int, start: str, end: str):
+def assign(city: str):
     global df 
     df = pd.read_csv('datasets/' + city + 'Set.csv')
     timelist = []
@@ -29,7 +29,8 @@ def allocate(city: str, nCluster: int, start: str, end: str):
                 'OTHER NARCOTIC VIOLATION' : 4,'HUMAN TRAFFICKING' : 6,'CRIM SEXUAL ASSAULT' : 6, 'HOMICIDE' : 6}
     # some code here idk lmao
 
-    return analyze(nCluster, start, end)
+
+    return df
 
 def alpha_shape(points, alpha, only_outer=True):
     assert points.shape[0] > 3, "Need at least four points"
@@ -63,7 +64,7 @@ def genHeatMap(df):
                         mapbox_style="stamen-terrain", radius=1, width=650, height=650)
     return fig
 
-def timeFilter(start: str, end: str) -> pd.DataFrame:
+def timeFilter(df: pd.DataFrame, start: str, end: str) -> pd.DataFrame:
     start = dt.datetime.strptime(start, '%H:%M:%S')
     end = dt.datetime.strptime(end, '%H:%M:%S')
     if (start < end):
@@ -83,7 +84,6 @@ def analyze(nCluster: int, start: str, end: str):
     tdf['cluster'] = results
     Hcenters = []
     Pedges = []
-    hm = genHeatMap(tdf)
     for i in range(len(set(results))):
         fildf = tdf[tdf['cluster'] == i]
         nmod = KMeans(int(np.power(len(fildf), 0.25)))
@@ -95,10 +95,16 @@ def analyze(nCluster: int, start: str, end: str):
             continue
         Hcenters.append(centers)
         Pedges.append(edges)
-    return [hm, Hcenters, Pedges]
+    return [Hcenters, Pedges]
 
 # test case for debug, runtime is still high.
 if __name__ == '__main__':
-    hm, centers, edges = allocate('San Francisco', 85, '08:45:00', '17:35:00')
-    print(len(centers))
+    city = "San Francisco"
+    start = '08:45:00'
+    end = '17:35:00'
+    n = 85
+    assign(city)
+    hm = genHeatMap(timeFilter(start, end))
+    centers, edges = analyze(n, start, end)
+    print(hm)
     print(edges)
