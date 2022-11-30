@@ -27,7 +27,7 @@ app.add_middleware(
 def read_root():
     return {"result" : "Successfully connnected to nikolaj's API."}
 
-@app.get('/allocate/{type_gen}')
+@app.post('/allocate/{type_gen}')
 def generate_figure(type_gen: str, city_name:str, n: int, start: str, end: str):
     # filter the dataframe by time, regardless of what method is chosen.
     df = assign(city_name)
