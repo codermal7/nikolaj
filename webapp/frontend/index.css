@@ -147,7 +147,7 @@ div.card div.card-body p > b {
 /* div.card div.card-body div.card-link {
   padding: 0 0 30px;
 } */
-div.card div.card-body div.card-link a {
+div.card div.card-body div.card-link  a {
   -webkit-font-smoothing: antialiased;
   position: inherit;
   display: inline-block;
@@ -380,7 +380,7 @@ div.card div.card-body div.card-link a:hover {
   /* text-transform: uppercase; */
 }
 
-.btn-main {
+div.btn-main a{
   /* background-color:rgb(27, 22, 22); */
   color: #fff;
   font-family: "Raleway", sans-serif;
@@ -396,7 +396,7 @@ div.card div.card-body div.card-link a:hover {
   border-radius: 5px;
 }
 
-.btn-main:hover {
+div.btn-main:hover a{
   border: none;
   color: #fafbfc;
   background-color: #0f75ae;
