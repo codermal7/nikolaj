@@ -1,12 +1,21 @@
 function onclick1(){
-    var x=document.getElementById("police").value;
-    var y=document.getElementById('fromtime').value;
-    var z=document.getElementById('totime').value;
-    alert(x+" "+y+" "+z);
+    var n=document.getElementById("police").value;
+    var start=document.getElementById('fromtime').value;
+    var end=document.getElementById('totime').value;
+
+    start+=":00";
+    end+=":00";
+
+    alert(n+" "+start+" "+end);
 }
+
 function onclick2(){
-    var x=document.getElementById("police").value;
-    var y=document.getElementById('fromtime').value;
-    var z=document.getElementById('totime').value;
-    alert(x+" "+y+" "+z);
+    var n=document.getElementById("police").value;
+    var start=document.getElementById('fromtime').value;
+    var end=document.getElementById('totime').value;
+
+    start+=":00";
+    end+=":00";
+    
+    alert(n+" "+start+" "+end);
 }

@@ -1,9 +1,11 @@
+# WARNING: THIS IS A VERY SLOPPY IMPLEMENTATION.
+# The absolute barebones we could do, not knowing any actual web development.
 from fastapi import FastAPI
-import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 from modularCluster import *
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 app = FastAPI(debug=True)
 
@@ -35,7 +37,7 @@ def generate_figure(type_gen: str, city_name:str, n: int, start: str, end: str):
     if type_gen == "Heatmap":
         hm = genHeatMap(timedf)
         hm.write_html('webapp/frontend/heatmap.html')
-        return {'status' : 'done'} # manya's code needs to wait for this message
+        return RedirectResponse("http://localhost:8080/heatmap.html", 200) # manya's code needs to wait for this message
     
     # almost the same as heatmap, but with more monkey code required to make it work.
     elif type_gen == "Routes":
@@ -61,7 +63,10 @@ def generate_figure(type_gen: str, city_name:str, n: int, start: str, end: str):
         # write the html file.
         fig.write_html("webapp/frontend/graph.html")
 
-        return {'status' : 'done'} # manya's code needs to wait for this message
+        return RedirectResponse("http://localhost:8080/graph.html", 200) # redirect to the file hosted in my 
+                                                                         # python http server at port 8080
 
-
+# Run these functions in a terminal.
+# $ python -m http.server --directory "webapp/frontend" 8080
+# $ uvicorn webapp.backend.main:app
 # @app.websocket('/')
