@@ -9,7 +9,7 @@ function onclick1(){
     start+=":00";
     end+=":00";
     
-    alert(n+" "+start+" "+end, 'info');
+    alert(d);
     fetch('http://localhost:8000/allocate/Heatmap', {
         method: 'POST',
         headers:{
