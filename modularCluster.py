@@ -74,14 +74,10 @@ def timeFilter(df: pd.DataFrame, start: str, end: str) -> pd.DataFrame:
     else:
         return df.loc[(df['Time'] >= start) | (df['Time'] < end)]
 
-def cluster(nCluster: int, df: pd.DataFrame):
-    nCluster = nCluster
-    model = KMeans(n_clusters=nCluster)
-    results = model.fit_predict(df.loc(axis=1)['Latitude':'Longitude'])
-    return results
 
 def analyze(tdf: pd.DataFrame, nCluster: int):
-    results = cluster(nCluster, tdf)
+    model = KMeans(n_clusters=nCluster)
+    results = model.fit_predict(tdf.loc(axis=1)['Latitude':'Longitude'])
     tdf['cluster'] = results
     Hcenters = []
     Pedges = []

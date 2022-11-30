@@ -42,7 +42,7 @@ def generate_figure(type_gen: str, payloadbody: dict = Body(...)):
     # align payloadbody items with my variables.
     # payloadbody = payloadbody.json()
     city_name = payloadbody["city_name"]
-    n = payloadbody["n"]
+    n = int(payloadbody["n"])
     start = payloadbody["start"]
     end = payloadbody["end"]
     # filter the dataframe by time, regardless of what method is chosen.
@@ -75,12 +75,12 @@ def generate_figure(type_gen: str, payloadbody: dict = Body(...)):
                 'center': {'lon': np.average(longs), 'lat': np.average(lats)},
                 'style': "stamen-terrain",
                 'center': {'lon': np.average(longs), 'lat': np.average(lats)},
-                'zoom': 11.2},
+                'zoom': 10},
             showlegend=False)
         # write the html file.
         fig.write_html("webapp/frontend/graph.html")
 
-        return RedirectResponse("http://localhost:8080/graph.html", 200) # redirect to the file hosted in my 
+        return PlainTextResponse("http://localhost:8080/graph.html", 200) # redirect to the file hosted in my 
                                                                          # python http server at port 8080
 
 @app.options('/allocate/{type_gen}')
