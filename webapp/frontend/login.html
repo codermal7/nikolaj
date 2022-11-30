@@ -8,16 +8,17 @@
     <title>Project Nikolaj</title>
     <link rel="stylesheet" type="text/css" href="login.css" />
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="app.js"></script>
 </head>
 
 <body>
-    
+
     <div class="container" id="container">
         <!-- <div class="form-container sign-up-container">
             
         </div> -->
         <div class="form-container sign-in-container overlay2">
-            <form action="/choice.html">
+            <form>
                 <!-- <h1>Sign Up</h1> -->
                 <div class="social-container">
                 </div>
@@ -26,15 +27,14 @@
                 <input type="time" id="fromtime" name="fromtime" placeholder="FROM TIME" />
                 <input type="time" id="totime" name="totime" placeholder="TO TIME" />
                 <!-- <a href="#">Forgot your password?</a> -->
-
                 <!-- <input >Submit</input> -->
                 <td>
                     <div class="button1">
-                    <a href="/choice.html">
-                        <input type="submit" id="heatmap" name="heatmap_submit" value="Generate Heatmap"
-                            style="background:rgb(146, 144, 9); color: white;"></a>
-                        <input type="submit" id="optimal routes" name="routes_submit" value="Generate Route"
-                            style="background:rgb(146, 144, 9); color: white;"></a>
+                    <!-- <a href="/choice.html"> -->
+                        <input type="button" id="heatmap" name="heatmap_submit" value="Generate Heatmap" onclick="onclick1()"
+                            style="background:rgb(146, 144, 9); color: white;">
+                        <input type="button" id="routes" name="routes_submit" value="Generate Route" onclick="onclick2()"
+                            style="background:rgb(146, 144, 9); color: white;">
                     </div>
                 </td>
 
