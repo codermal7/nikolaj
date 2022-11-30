@@ -94,6 +94,15 @@ a {
   
 }
 
+.depptt{
+  background: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  /* width: 100% !important; */
+  width: 16.7vw !important;
+}
+
 button {
   border-radius: 20px;
   border: 1px solid #f4e805;

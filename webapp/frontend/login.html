@@ -1,56 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Nikolaj</title>
     <link rel="stylesheet" type="text/css" href="login.css" />
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="app.js"></script>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div class="container" id="container">
-        <!-- <div class="form-container sign-up-container">
+      <!-- <div class="form-container sign-up-container">
             
         </div> -->
-        <div class="form-container sign-in-container overlay2">
-            <form>
-                <!-- <h1>Sign Up</h1> -->
-                <div class="social-container">
-                </div>
-                
-                <input type="number" id="police" name="police" placeholder="Enter number of police men" />
-                <input type="time" id="fromtime" name="fromtime" placeholder="FROM TIME" />
-                <input type="time" id="totime" name="totime" placeholder="TO TIME" />
-                <!-- <a href="#">Forgot your password?</a> -->
-                <!-- <input >Submit</input> -->
-                <td>
-                    <div class="button1">
-                    <!-- <a href="/choice.html"> -->
-                        <input type="button" id="heatmap" name="heatmap_submit" value="Generate Heatmap" onclick="onclick1()"
-                            style="background:rgb(146, 144, 9); color: white;">
-                        <input type="button" id="routes" name="routes_submit" value="Generate Route" onclick="onclick2()"
-                            style="background:rgb(146, 144, 9); color: white;">
-                    </div>
-                </td>
-
-
-                
-            </form>
-        </div>
-        <div class="overlay-container">
-            <div class="overlay">
-                
-                <div class="overlay-panel overlay-right">
-                    <h1>Project <br> Nikolaj </h1>
-                    <!-- <p></p> -->
-                </div>
+      <div class="form-container sign-in-container overlay2">
+        <form>
+          <!-- <h1>Sign Up</h1> -->
+          <div class="social-container"></div>
+          <div>
+            <select name="dept" id="dept" class="depptt">
+              <option id="dept1" value="LA" selected>Choose Department</option>
+              <option id="dept1" value="LA">LOS ANGELES</option>
+              <option id="dept1" value="CH">CHICAGO</option>
+              <option id="dept1" value="NY">NEW YORK</option>
+              <option id="dept1" value="SF">SAN FRANSISCO</option>
+            </select>
+          </div>
+          <input
+            type="number"
+            id="police"
+            name="police"
+            placeholder="Enter number of police men"
+          />
+          <input
+            type="time"
+            id="fromtime"
+            name="fromtime"
+            placeholder="FROM TIME"
+          />
+          <input type="time" id="totime" name="totime" placeholder="TO TIME" />
+          <!-- <a href="#">Forgot your password?</a> -->
+          <!-- <input >Submit</input> -->
+          <td>
+            <div class="button1">
+              <!-- <a href="/choice.html"> -->
+              <input
+                type="button"
+                id="heatmap"
+                name="heatmap_submit"
+                value="Generate Heatmap"
+                onclick="onclick1()"
+                style="background: rgb(146, 144, 9); color: white"
+              />
+              <input
+                type="button"
+                id="routes"
+                name="routes_submit"
+                value="Generate Route"
+                onclick="onclick2()"
+                style="background: rgb(146, 144, 9); color: white"
+              />
             </div>
+          </td>
+        </form>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-right">
+            <h1>
+              Project <br />
+              Nikolaj
+            </h1>
+            <!-- <p></p> -->
+          </div>
         </div>
+      </div>
     </div>
     <!-- <script src="main.js"></script>
     <script type="module">
@@ -107,16 +133,5 @@
             location.replace("");
         }
     </script> -->
-</body>
-
+  </body>
 </html>
-
-
-
-
-
-
-
-
-
-
