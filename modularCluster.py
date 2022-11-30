@@ -110,10 +110,10 @@ def analyze(tdf: pd.DataFrame, nCluster: int):
 
 # test case for debug, runtime is still high.
 if __name__ == '__main__':
-    city = "San Francisco"
+    city = "Los Angeles"
     start = '08:45:00'
     end = '17:35:00'
     n = 85
     df = assign(city)
-    hm = genHeatMap(timeFilter(df, start, end))
-    print(hm)
+    naal, naam = analyze(df, n)
+    print(naal)
