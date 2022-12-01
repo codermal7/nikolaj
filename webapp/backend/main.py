@@ -67,7 +67,7 @@ def generate_figure(type_gen: str, payloadbody: dict = Body(...)):
                 mode = "markers+lines",
                 lon = longs[i],
                 lat = lats[i],
-                marker = {'size': 10, 'color' : 'blue'}))
+                marker = {'size': 6, 'color' : 'blue'}))
 
         fig.update_layout(
             margin ={'l':15,'t':5,'b':5,'r':15},

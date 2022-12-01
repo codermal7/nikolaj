@@ -1,7 +1,7 @@
 
 // function to generate heatmaps.
 function onclick1(){
-    var d = document.getElementById("dept1").value;
+    var d = document.getElementById("dept").value;
     var n=document.getElementById("police").value;
     var start=document.getElementById("fromtime").value;
     var end=document.getElementById("totime").value;
@@ -16,7 +16,7 @@ function onclick1(){
                     "end" : end
                 }
     
-    alert(n+" "+start+" "+end, "info");
+    alert(d+" "+n+" "+start+" "+end, "info");
     fetch("http://localhost:8000/allocate/Heatmap", {
         method: "POST",
         headers:{
@@ -31,6 +31,7 @@ function onclick1(){
 
 // slight variations for the zone plotting.
 function onclick2(){
+    var d = document.getElementById("dept").value
     var n=document.getElementById("police").value;
     var start=document.getElementById("fromtime").value;
     var end=document.getElementById("totime").value;
@@ -39,13 +40,13 @@ function onclick2(){
     end+=":00";
 
     var payload = {
-                    "city_name" : "Los Angeles", // remember to change this to the variable later.
+                    "city_name" : d, // remember to change this to the variable later.
                     "n" : n,
                     "start" : start,
                     "end" : end
                 }
     
-    alert(n+" "+start+" "+end, "info");
+    alert(d+" "+n+" "+start+" "+end, "info");
     fetch("http://localhost:8000/allocate/Patrol", {
         method: "POST",
         headers:{
